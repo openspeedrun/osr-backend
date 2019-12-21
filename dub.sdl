@@ -4,7 +4,7 @@ authors "clipsey"
 copyright "Copyright © 2019, clipsey"
 license "GPLv3"
 
-stringImportPaths "views/" "emails/"
+stringImportPaths "emails/"
 
 dependency "vibe-d" version="~>0.8.6"
 dependency "secured" version="~>2.0.1"
