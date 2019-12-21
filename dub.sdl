@@ -1,0 +1,12 @@
+name "openspeedrun"
+description "A free and open source speedrun leaderboard implementation"
+authors "clipsey"
+copyright "Copyright © 2019, clipsey"
+license "GPLv3"
+
+stringImportPaths "views/" "emails/"
+
+dependency "vibe-d" version="~>0.8.6"
+dependency "secured" version="~>2.0.1"
+dependency "vibe-sdlang" version="~master"
+dependency "sdlang-d" version="~>0.10.5"
