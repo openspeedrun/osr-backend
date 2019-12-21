@@ -38,6 +38,8 @@ dub build -b release --compiler=ldc2
 ```
 
 &nbsp;
+## Running OpenSpeedRun
+
 ### Configuring the Server
 OpenSpeedRun is configured via the `osrconfig.sdl` file, which should either be placed in the same directory as the executable or `/etc/osr/osrconfig.sdl` on POSIX complaint systems.
 
@@ -105,4 +107,35 @@ bindAddress "127.0.0.1:8080"
 
 // The MongoDB database connection string
 dbConnectionString "mongodb://127.0.0.1"
+```
+
+&nbsp;
+### Running the server (debug)
+To build and run a debug build, just run
+```
+dub
+```
+In the project's root directory.
+
+&nbsp;
+### Running the server (release)
+It is recommended to on Linux, run the server via a systemd unit.
+
+#### Example
+Would be present in `/etc/systemd/system/osr.service`
+```ini
+[Unit]
+Description=OpenSpeedRun Server
+After=network.target
+After=systemd-user-sessions.service
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/opt/osr/osr-backend
+ExecStart=/opt/osr/osr-backend
+
+[Install]
+WantedBy=multi-user.target
 ```
