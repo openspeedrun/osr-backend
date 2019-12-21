@@ -28,18 +28,27 @@ Make sure those are installed before building
 
 &nbsp;
 ### Building
+#### Notes
+
+The output of the builds are stored in the `out/` directory.
+
+If the directory doesn't exist, it will be created automatically.
+
+The output will be called `osr-server`.
+
 #### Debug
-To build a debug build run
+To build a debug build, run the folllowing
 ```
 dub build
 ```
-in the root directory of this project.
+in the root directory of the project.
 
 #### Release
-To build a release build run
+To build a release build, run the folllowing
 ```
 dub build -b release --compiler=ldc2
 ```
+in the root directory of the project.
 
 &nbsp;
 ## Running OpenSpeedRun
@@ -115,7 +124,7 @@ dbConnectionString "mongodb://127.0.0.1"
 
 &nbsp;
 ### Running the server (debug)
-To build and run a debug build, just run
+To build and run a debug build, run the folllowing
 ```
 dub
 ```
@@ -123,7 +132,10 @@ In the project's root directory.
 
 &nbsp;
 ### Running the server (release)
-It is recommended to on Linux, run the server via a systemd unit.
+It is recommended to (on Linux), run the server via a systemd unit.
+We also recommend installing osr in to /opt/osr as it's not a system package.
+
+We won't provide Windows Server-specific instructions as Windows Server is not officially supported. The executable should build and run on Windows, but here be dragons.
 
 #### Example
 Would be present in `/etc/systemd/system/osr.service`
@@ -137,9 +149,16 @@ After=network-online.target
 [Service]
 Type=simple
 Restart=always
-WorkingDirectory=/opt/osr/osr-backend
-ExecStart=/opt/osr/osr-backend
+WorkingDirectory=/opt/osr/osr-server
+ExecStart=/opt/osr/osr-server
 
 [Install]
 WantedBy=multi-user.target
 ```
+
+Remember to enable and start the server with
+```
+systemctl enable osr.service
+systemctl start osr.service
+```
+These commands only need to be run once.

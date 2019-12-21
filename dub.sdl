@@ -5,6 +5,8 @@ copyright "Copyright © 2019, clipsey"
 license "GPLv3"
 
 stringImportPaths "emails/"
+targetPath "out/"
+targetName "osr-server"
 
 dependency "vibe-d" version="~>0.8.6"
 dependency "secured" version="~>2.0.1"
