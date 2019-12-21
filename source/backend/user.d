@@ -269,7 +269,7 @@ class User {
         ]);
     }
 
-    static User getFromJWT(JWTToken* token) {
+    static User getFromJWT(Token token) {
         // Verify that the token exists.
         if (token is null) return null;
 
@@ -301,7 +301,7 @@ class User {
         * Is a user
         * Has verified their email
     +/
-    static bool getValidFromJWT(JWTToken* token) {
+    static bool getValidFromJWT(Token token) {
         import std.stdio : writeln;
         if (token is null) return false;
 

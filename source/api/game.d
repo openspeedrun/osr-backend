@@ -28,9 +28,7 @@ struct GameCreationData {
 
 @path("/games")
 @requiresAuth
-interface IGameEndpoint {
-    mixin implemementJWT;
-
+interface IGameEndpoint : JWTEndpoint!JWTAuthInfo {
     /++
         Get game info
     +/

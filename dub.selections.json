@@ -17,6 +17,7 @@
 		"unit-threaded": "0.7.55",
 		"vibe-core": "1.8.1",
 		"vibe-d": "0.8.6",
+		"vibe-jwt": "~master",
 		"vibe-sdlang": "~master"
 	}
 }

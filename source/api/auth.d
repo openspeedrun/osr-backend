@@ -20,14 +20,14 @@ enum REG_DISABLED = "User registrations have been disabled.";
     Endpoint for user managment
 +/
 @path("/auth")
-interface IAuthenticationEndpoint {
+interface IAuthenticationEndpoint : JWTEndpoint!JWTAuthInfo {
 
     /++
         Logs in as bot account
     +/
     @method(HTTPMethod.POST)
     @path("/login/bot")
-    Token login(string authToken);
+    string login(string authToken);
 
 
     /++
@@ -37,7 +37,7 @@ interface IAuthenticationEndpoint {
     @path("/login/user")
     @bodyParam("username", "username")
     @bodyParam("password", "password")
-    Token login(string username, string password);
+    string login(string username, string password);
 
     /++
         Register a new account
@@ -92,25 +92,19 @@ class AuthenticationEndpoint : IAuthenticationEndpoint {
 private:
     string createToken(User user) {
         import vibe.data.json : serializeToJson, Json;
-        JWTToken token;
-        token.header.algorithm = JWTAlgorithm.HS512;
-        token.payload = Json.emptyObject();
-        token.payload["username"] = user.username;
 
         // TODO: Make token expire.
+        Token token = new Token(Json(["username": Json(user.username)]));
+        token.header.algorithm = Algorithm.HS512;
 
-        token.sign();
-
-        return token.toString();
+        return token.sign();
     }
 
 public:
 
-    mixin implemementJWT;
-
     /// Login (bot)
     @noAuth
-    Token login(string secret) {
+    string login(string secret) {
 
         // Get user instance
         User userPtr = User.getFromSecret(secret);
@@ -127,7 +121,7 @@ public:
 
     /// Login (user)
     @noAuth
-    Token login(string username, string password) {
+    string login(string username, string password) {
 
         // Get user instance
         User userPtr = User.get(username);

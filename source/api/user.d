@@ -25,9 +25,7 @@ import config;
 +/
 @path("/users")
 @requiresAuth
-interface IUserEndpoint {
-
-    mixin implemementJWT;
+interface IUserEndpoint : JWTEndpoint!JWTAuthInfo {
 
     /++
         Gets user info
@@ -87,7 +85,7 @@ interface IUserEndpoint {
 }
 
 @requiresAuth
-class UserEndpoint : AuthEndpoint, IUserEndpoint {
+class UserEndpoint : IUserEndpoint {
 public:
 
     FEUser user(string userId) {

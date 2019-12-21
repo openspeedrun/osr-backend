@@ -30,9 +30,6 @@ enum StatusCode : string {
     StatusInternalErr = "internal_error"
 }
 
-// A log in token is a string
-alias Token = string;
-
 /++
     A status without associated data.
 +/

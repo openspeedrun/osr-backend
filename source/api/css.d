@@ -30,9 +30,7 @@ import backend.auth.jwt;
 
 @path("/css")
 @requiresAuth
-interface ICSSEndpoint {
-
-    mixin implemementJWT;
+interface ICSSEndpoint : JWTEndpoint!JWTAuthInfo {
 
     /++
         Gets the user-set CSS.
@@ -94,8 +92,6 @@ interface ICSSEndpoint {
 
 class CSSEndpoint : ICSSEndpoint {
 public:
-
-    mixin implemementJWT;
 
     string css(string _gameId, bool showPending = false) {
         // Make sure Game exists.
