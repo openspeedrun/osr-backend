@@ -2,9 +2,13 @@
 This is the backend system of the OpenSpeedRun server software.
 
 ## What is OpenSpeedRun?
-OpenSpeedRun is an open source server software suite for hosting [speedrunning](https://en.wikipedia.org/wiki/Speedrun) leaderboards.
+OpenSpeedRun is an open source (AGPL licensed) server software suite for hosting [speedrunning](https://en.wikipedia.org/wiki/Speedrun) leaderboards.
 
-This exists in contrast to some propriatary and monolithic software solutions which are generally in use in the speedrunning community.
+OpenSpeedRun aims to provide the resources for individuals and organizations to host their own leaderboards for games. 
+
+The base server comes without a frontend; while we do provide an [official frontend](https://github.com/openspeedrun/osr-frontend), OSR can be used headless to store time leaderboards for games directly.
+
+We host an offical instance for general speedrunning at [openspeedrun.net](openspeedrun.net/games).
 
 &nbsp;
 ## Building OpenSpeedRun
