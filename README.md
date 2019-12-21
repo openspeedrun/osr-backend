@@ -8,7 +8,7 @@ OpenSpeedRun aims to provide the resources for individuals and organizations to 
 
 The base server comes without a frontend; while we do provide an [official frontend](https://github.com/openspeedrun/osr-frontend), OSR can be used headless to store time leaderboards for games directly.
 
-We host an offical instance for general speedrunning at [http://openspeedrun.net](openspeedrun.net/games).
+We host an offical instance for general speedrunning at [openspeedrun.net](http://openspeedrun.net/games).
 
 &nbsp;
 ## Building OpenSpeedRun
