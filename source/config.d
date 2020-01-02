@@ -188,6 +188,12 @@ struct ServerConfig {
     +/
     @optional
     string dbConnectionString = "mongodb://127.0.0.1";
+
+    /++
+        Base address of the OSR server
+    +/
+    @optional
+    string baseAddress = "http://localhost:8080/";
 }
 
 /++

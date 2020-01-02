@@ -5,6 +5,7 @@ import db;
 import backend.common;
 import backend.mail;
 import std.format;
+import config;
 
 class Registration {
 
@@ -39,7 +40,7 @@ class Registration {
         EMAILER.send(
             user.email, 
             "OpenSpeedRun Account Verification", 
-            import("verify_email.html").format(reg.userName, reg.key), 
+            import("verify_email.html").format(CONFIG.baseAddress, reg.userName, reg.key), 
             MailImportance.High);
     }
 
