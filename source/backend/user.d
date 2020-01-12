@@ -382,13 +382,6 @@ class User {
     Pronouns pronouns;
 
     /++
-        Wether to display pronouns on a user's account, by default off.
-    +/
-    @name("display_pronouns")
-    @optional
-    bool displayPronouns = false;
-
-    /++
         country code for the country of origin
     +/
     @name("country")
