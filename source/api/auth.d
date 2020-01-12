@@ -16,35 +16,35 @@ enum REG_RC_SCORE = "Spam bots not allowed.";
 enum REG_CREATE_ERROR = "User could not be created for unknown reason. Please contact the developers.";
 enum REG_DISABLED = "User registrations have been disabled.";
 
-/++
+/**
     Endpoint for user managment
-+/
+*/
 @path("/auth")
 interface IAuthenticationEndpoint : JWTEndpoint!JWTAuthInfo {
 
-    /++
+    /**
         Logs in as bot account
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/login/bot")
     string login(string authToken);
 
 
-    /++
+    /**
         Logs in as user account
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/login/user")
     @bodyParam("username", "username")
     @bodyParam("password", "password")
     string login(string username, string password);
 
-    /++
+    /**
         Register a new account
 
         returns ok_verify if account needs email verification
         returns a token if the account is verified and ready
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/register")
     @bodyParam("username", "username")
@@ -60,33 +60,33 @@ interface IAuthenticationEndpoint : JWTEndpoint!JWTAuthInfo {
     @path("/regstatus")
     bool registrationOpen();
 
-    /++
+    /**
         Verifies a new user allowing them to create/post runs, etc.
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/verify")
     @bodyParam("verifykey")
     string verify(string verifykey);
 
-    /++
+    /**
         Gets the status of a user's JWT token
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/status")
     string getUserStatus(JWTAuthInfo token);
 
 
-    /++
+    /**
         Gets the rechapta site key.
-    +/
+    */
     @path("/siteKey")
     @method(HTTPMethod.GET)
     string siteKey();
 }
 
-/++
+/**
     Implementation of auth endpoint
-+/
+*/
 @requiresAuth
 class AuthenticationEndpoint : IAuthenticationEndpoint {
 private:

@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module backend.common;
 import std.regex : split, regex;
 import std.conv : to;
@@ -105,33 +105,33 @@ class Attachment {
 
 class SRTimeStamp {
 @trusted:
-    /++
+    /**
         Creates a new timestamp from an input string
-    +/
+    */
     static SRTimeStamp fromString(string input) {
         string[] timeSlices = input.split(regex(`:|\.|(h )|(m )|(s )|(ms)`));
         if (timeSlices.length != 4) throw new InvalidFmtException("timestamp", "HH:MM:SS.ms");
         return new SRTimeStamp(timeSlices[0].to!int, timeSlices[1].to!int, timeSlices[2].to!int, timeSlices[3].to!int);
     }
 
-    /++
+    /**
         Hours it took to complete the speedrun
-    +/
+    */
     int hours;
 
-    /++
+    /**
         Minutes it took to complete the speedrun
-    +/
+    */
     int minutes;
 
-    /++
+    /**
         Seconds it took to complete the speedrun
-    +/
+    */
     int seconds;
 
-    /++
+    /**
         Miliseconds it took to complete the speedrun
-    +/
+    */
     int msecs;
 
     this(int hours, int minutes, int seconds, int msecs) {
@@ -141,42 +141,42 @@ class SRTimeStamp {
         this.msecs = msecs;
     }
 
-    /++
+    /**
         Returns a self-parsable time format
-    +/
+    */
     override string toString() {
         import std.format : format;
         return "%d:%d:%d.%d".format(hours, minutes, seconds, msecs);
     }
 
-    /++
+    /**
         Returns a human readable time format
-    +/
+    */
     string toHumanReadable() {
         import std.format : format;
         return "%dh %dm %ds %dms".format(hours, minutes, seconds, msecs);
     }
 }
 
-/++
+/**
     The result of a search
-+/
+*/
 struct SearchResult(T) {
     import vibe.db.mongo.cursor : MongoCursor;
-    /++
+    /**
         How many results were found in total on the server
-    +/
+    */
     ulong resultsCount;
 
-    /++
+    /**
         The mongo cursor over the results
-    +/
+    */
     MongoCursor!T result;
 }
 
-/++
+/**
     Exception that expresses that an element for an Action is already been used.
-+/
+*/
 class TakenException : Exception {
     this(string takenElm) {
         import std.format : format;
@@ -184,9 +184,9 @@ class TakenException : Exception {
     }
 }
 
-/++
+/**
     Exception that express that an element had the wrong format for the Action.
-+/
+*/
 class InvalidFmtException : Exception {
     this(string elm, string expected) {
         import std.format : format;
@@ -196,7 +196,7 @@ class InvalidFmtException : Exception {
 
 enum ExpectedIDFmt = "a-z, A-Z, 0-9, '_', '-', '.'";
 
-/++
+/**
     Formats ids
     IDs can contain:
      * Alpha Numeric Characters
@@ -206,7 +206,7 @@ enum ExpectedIDFmt = "a-z, A-Z, 0-9, '_', '-', '.'";
 
     Spaces will automatically be converted to _
     Other characters will be discarded
-+/
+*/
 string formatId(string id) {
     import std.uni : isAlphaNum;
     string outId;

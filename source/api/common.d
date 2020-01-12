@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,16 +12,16 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module api.common;
 public import vibe.data.serialization;
 public import backend.auth.jwt;
 public import vibe.web.rest;
 public import vibe.http.common;
 
-/++
+/**
     Enum of valid status codes that can be returned from the API
-+/
+*/
 enum StatusCode : string {
     StatusOK = "ok",
     StatusInvalid = "invalid",
@@ -30,18 +30,18 @@ enum StatusCode : string {
     StatusInternalErr = "internal_error"
 }
 
-/++
+/**
     A status without associated data.
-+/
+*/
 struct Status {
-    /++
+    /**
         The status code defining what error has happened
-    +/
+    */
     StatusCode status;
 
-    /++
+    /**
         Error message (if any)
-    +/
+    */
     @optional
     string message = null;
 
@@ -54,41 +54,41 @@ struct Status {
         this.message = error;
     }
 
-    /++
+    /**
         Returns explicit error version of status
-    +/
+    */
     static Status error(StatusCode code, string error) {
         return Status(code, error);
     }
 }
 
-/++
+/**
     A status is the basic container for API callback information.
-+/
+*/
 struct StatusT(T) {
-    /++
+    /**
         The status code defining what error has happened
-    +/
+    */
     StatusCode status;
 
-    /++
+    /**
         Error message (if any)
-    +/
+    */
     @optional
     string message = null;
 
-    /++
+    /**
         The data for the status
-    +/
+    */
     T data;
 
     this(StatusCode code) {
         this.status = code;
     }
     
-    /++
+    /**
         Returns explicit error version of status
-    +/
+    */
     static StatusT!T error(StatusCode code, string error) {
         auto status = StatusT!T(code);
         status.message = error;

@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module backend.run;
 import db;
 import vibe.data.serialization;
@@ -60,19 +60,19 @@ struct RunRunner {
         if (timeStamp is null) throw new Exception("No timestamp was provided");
     }
 
-    /++
+    /**
         How long the run took to complete in real-time
 
         This is for races, will not be present in normal runs
-    +/
+    */
     @optional
     SRTimeStamp timeStamp;
     
-    /++
+    /**
         How long the run took to complete in In-Game time
 
         This is for races, will not be present in normal runs
-    +/
+    */
     @optional
     SRTimeStamp timeStampIG;
 }
@@ -93,44 +93,44 @@ struct RunCreationData {
     */
     string attachment;
 
-    /++
+    /**
         How long the run took to complete in real-time
-    +/
+    */
     SRTimeStamp timeStamp;
     
-    /++
+    /**
         How long the run took to complete in In-Game time
 
         Leave blank/null for no Ingame timer
-    +/
+    */
     SRTimeStamp timeStampIG;
 
-    /++
+    /**
         Link to video proof of completion
-    +/
+    */
     string proof;
 
-    /++
+    /**
         User-set description
-    +/
+    */
     string description;
 }
 
-/++
+/**
     A run
-+/
+*/
 class Run {
 @trusted:
-    /++
+    /**
         Returns run instance if exists.
-    +/
+    */
     static Run get(string runId) {
         return DATABASE["speedrun.runs"].findOne!Run(["_id": runId]);
     }
 
-    /++
+    /**
         Returns the amount of runs attributed to a user
-    +/
+    */
     static ulong getRunCountForUser(string userId) {
         return DATABASE["speedrun.runs"].count(["userId": userId]);
     }
@@ -142,9 +142,9 @@ class Run {
         return DATABASE["speedrun.runs"].count(["_id": id]) > 0;
     }
 
-    /++
+    /**
         ID of the run
-    +/
+    */
     @name("_id")
     string id;
 
@@ -156,9 +156,9 @@ class Run {
     @name("userId")
     string posterId;
 
-    /++
+    /**
         ID of the runner
-    +/
+    */
     @name("runners")
     RunRunner[] runners;
 
@@ -168,29 +168,29 @@ class Run {
     @name("attachedTo")
     Attachment attachedTo;
 
-    /++
+    /**
         Date and time this run was posted
-    +/
+    */
     DateTime postDate;
 
-    /++
+    /**
         How long the run took to complete in real-time
-    +/
+    */
     SRTimeStamp timeStamp;
     
-    /++
+    /**
         How long the run took to complete in In-Game time
-    +/
+    */
     SRTimeStamp timeStampIG;
 
-    /++
+    /**
         Link to video proof of completion
-    +/
+    */
     string proof;
 
-    /++
+    /**
         User-set description
-    +/
+    */
     string description;
 
     /**
@@ -198,9 +198,9 @@ class Run {
     */
     bool invalidated;
 
-    /++
+    /**
         Wether the run has been verified by a game moderator
-    +/
+    */
     bool verified = false;
 
     /// For deserialization
@@ -268,17 +268,17 @@ class Run {
         DATABASE["speedrun.runs"].insert(this);
     }
 
-    /++
+    /**
         Accept a run
-    +/
+    */
     void accept() {
         verified = true;
         update();
     }
 
-    /++
+    /**
         Revoke a run
-    +/
+    */
     void revoke() {
         verified = false;
         update();
@@ -300,18 +300,18 @@ class Run {
         update();
     }
 
-    /++
+    /**
         Deny a run
-    +/
+    */
     void deny() {
         deleteRun();
     }
 
-    /++
+    /**
         Move game from one category to an other
 
         This function sanity checks moves, so no games can be moved from one game to another.
-    +/
+    */
     void move(string to) {
 
         // Run sanity checks first
@@ -346,16 +346,16 @@ class Run {
         update();
     }
 
-    /++
+    /**
         Update the data in the database
-    +/
+    */
     void update() {
         return DATABASE["speedrun.runs"].update(["_id": id], this);
     }
 
-    /++
+    /**
         Delete game
-    +/
+    */
     void deleteRun() {
         DATABASE["speedrun.runs"].remove(["_id": id]);
         destroy(this);

@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module crypt;
 import secured.kdf;
 import secured.random;
@@ -23,16 +23,16 @@ struct HashCombination {
     ubyte[] salt;
 }
 
-/++
+/**
     Hash password using a secure randomly generated salt
-+/
+*/
 HashCombination hashPassword(string password) {
     return hashPassword(password, random(SCRYPT_SALT_LENGTH));
 }
 
-/++
+/**
     Hash a password using salt
-+/
+*/
 HashCombination hashPassword(string password, ubyte[] salt) {
     HashCombination combination;
     combination.salt = salt;
@@ -48,9 +48,9 @@ HashCombination hashPassword(string password, ubyte[] salt) {
     return combination;
 }
 
-/++
+/**
     Verify a password's hash
-+/
+*/
 bool verifyPassword(string password, ubyte[] hash, ubyte[] salt) {
     HashCombination hashcomb = hashPassword(password, salt);
     return hashcomb.hash == hash;

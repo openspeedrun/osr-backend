@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module api.level;
 import vibe.web.rest;
 import vibe.data.serialization;

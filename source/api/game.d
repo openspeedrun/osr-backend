@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module api.game;
 import vibe.web.rest;
 import vibe.http.common;
@@ -29,17 +29,17 @@ struct GameCreationData {
 @path("/games")
 @requiresAuth
 interface IGameEndpoint : JWTEndpoint!JWTAuthInfo {
-    /++
+    /**
         Get game info
-    +/
+    */
     @method(HTTPMethod.GET)
     @path("/:gameId")
     @noAuth
     StatusT!Game game(string _gameId);
 
-    /++
+    /**
         Search for games
-    +/
+    */
     @method(HTTPMethod.GET)
     @path("/search/:page")
     @queryParam("pgCount", "pgCount")
@@ -48,40 +48,40 @@ interface IGameEndpoint : JWTEndpoint!JWTAuthInfo {
     @noAuth
     StatusT!(Game[]) search(string query, int _page = 0, int pgCount = 20, bool showPending = false);
 
-    /++
+    /**
         Creates a new game
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/:gameId")
     @bodyParam("data")
     @auth(Role.User)
     Status createGame(JWTAuthInfo token, string _gameId, GameCreationData data);
 
-    /++
+    /**
         Promotes a user to moderator of the game
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/:gameId/promote/:userId/:rank")
     @auth(Role.User)
     Status setRank(JWTAuthInfo token, string _gameId, string _userId, int _rank);
 
-    /++
+    /**
         === Moderator+ ===
         
         Accepts the pending game, if any.
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/accept/:gameId")
     @auth(Role.Mod)
     Status acceptGame(JWTAuthInfo token, string _gameId);
 
-    /++
+    /**
         === Moderator+ ===
         
         Denies the pending game, if any.
 
         This will delete the game from the server.
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/deny/:gameId")
     @auth(Role.Mod)

@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module config;
 import vibe.mail.smtp;
 import vibe.data.sdl;
@@ -20,7 +20,7 @@ import vibe.data.serialization;
 import vibe.core.log;
 
 
-/++
+/**
     Loads a config file from a system config path
     On POSIX:
         /etc/osr/(file).sdl
@@ -28,7 +28,7 @@ import vibe.core.log;
     
     On Windows:
         .\(file).sdl
-+/
+*/
 T loadConfigSDLFile(T)(string configName, bool optional = false) {
     import std.file : exists, write;
     import std.path : buildPath;
@@ -70,9 +70,9 @@ T loadConfigSDLFile(T)(string configName, bool optional = false) {
 /// The configuration of the server
 __gshared ServerConfig CONFIG;
 
-/++
+/**
     Server authentication options
-+/
+*/
 struct ServerAuthConfig {
 @trusted:
     /// Wether the server allows people to sign up
@@ -107,9 +107,9 @@ struct ServerAuthConfig {
     string recaptchaSiteKey = "INSERT_SITE_KEY";
 }
 
-/++
+/**
     Relevant SMTP settings
-+/
+*/
 struct ServerEmailSettings {
 @trusted:
 
@@ -131,13 +131,13 @@ struct ServerEmailSettings {
     @optional
     string originEmail;
 
-    /++
+    /**
         Converts this instance of ServerEmailSettings to an instance of SMTPClientSettings
 
         == Notes ==
         TLS is *required*
         Authentication type is *login*
-    +/
+    */
     SMTPClientSettings toClientSettings() {
         SMTPClientSettings settings = new SMTPClientSettings;
         settings.authType = SMTPAuthType.login;
@@ -160,47 +160,47 @@ struct ServerEmailSettings {
     }
 }
 
-/++
+/**
     Struct containing the server configuration
-+/
+*/
 struct ServerConfig {
 @safe:
-    /++
+    /**
         Settings for the email server
-    +/
+    */
     ServerEmailSettings smtp;
 
-    /++
+    /**
         Server authentication settings
         By default all authentication is enabled
-    +/
+    */
     @optional
     ServerAuthConfig auth;
 
-    /++
+    /**
         The address to bind the server to
-    +/
+    */
     @optional
     string bindAddress = "127.0.0.1:8080";
 
-    /++
+    /**
         Connection String for the MongoDB database
-    +/
+    */
     @optional
     string dbConnectionString = "mongodb://127.0.0.1";
 
-    /++
+    /**
         Base address of the OSR server
-    +/
+    */
     @optional
     string baseAddress = "http://localhost:8080/";
 }
 
-/++
+/**
     CHANGE THESE TO CHANGE PASSWORD SECURITY
 
     N set to double of 2017 recommended value
-+/
+*/
 enum SCRYPT_N = 65_536;
 enum SCRYPT_R = 8;
 enum SCRYPT_P = 1;

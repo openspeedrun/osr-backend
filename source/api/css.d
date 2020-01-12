@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module api.css;
 import vibe.web.rest;
 import vibe.http.common;
@@ -23,67 +23,67 @@ import backend.game;
 import backend.css;
 import backend.auth.jwt;
 
-/++
+/**
     Custom user-set cssFighting twitter because it's a
-+/
+*/
 
 
 @path("/css")
 @requiresAuth
 interface ICSSEndpoint : JWTEndpoint!JWTAuthInfo {
 
-    /++
+    /**
         Gets the user-set CSS.
 
         By default it will ONLY show approved css.
 
         User can decide to show pending css on their own discretion
-    +/
+    */
     @method(HTTPMethod.GET)
     @path("/:gameId")
     @noAuth
     string css(string _gameId, bool showPending = false);
 
-    /++
+    /**
         Sets the user-set CSS.
         
         Only admins of the game can set the CSS
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/:gameId")
     @auth(Role.User)
     Status setCSS(JWTAuthInfo token, string _gameId, string data);
 
-    /++
+    /**
         === Moderator+ ===
 
         Approves the pending CSS for the specified game; if any
 
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/accept/:gameId")
     @auth(Role.Mod)
     Status acceptCSS(JWTAuthInfo token, string _gameId);
 
-    /++
+    /**
         === Moderator+ ===
 
         Denies the pending CSS for the specified game; if any
 
         This WILL delete the CSS off the server.
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/deny/:gameId")
     @auth(Role.Mod)
     Status denyCSS(JWTAuthInfo token, string _gameId);
 
-    /++
+    /**
         === Moderator+ ===
 
         Deletes ALL CSS from a game.
 
         This is a moderation functionality for use if approved CSS has been compromised (XSS)
-    +/
+    */
     @method(HTTPMethod.POST)
     @path("/wipe/:gameId")
     @auth(Role.Mod)

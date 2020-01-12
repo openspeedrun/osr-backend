@@ -9,20 +9,20 @@ import config;
 
 class Registration {
 
-    /++
+    /**
         The registration key
-    +/
+    */
     @name("_id")
     string key;
 
-    /++
+    /**
         The user name
-    +/
+    */
     string userName;
 
-    /++
+    /**
         Queues user for registration
-    +/
+    */
     static void queueUser(string userId) {
         auto reg = new Registration();
         reg.key = generateID(64);

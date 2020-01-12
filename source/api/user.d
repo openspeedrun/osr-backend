@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,7 +12,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module api.user;
 import api.common;
 import backend.user;
@@ -20,24 +20,24 @@ import backend.common;
 import config;
 
 
-/++
+/**
     User endpoint for user settings
-+/
+*/
 @path("/users")
 @requiresAuth
 interface IUserEndpoint : JWTEndpoint!JWTAuthInfo {
 
-    /++
+    /**
         Gets user info
-    +/
+    */
     @path("/:userId")
     @method(HTTPMethod.GET)
     @noAuth
     FEUser user(string _userId);
 
-    /++
+    /**
         Search for games
-    +/
+    */
     @method(HTTPMethod.GET)
     @path("/search/:page")
     @queryParam("pgCount", "pgCount")
@@ -45,39 +45,39 @@ interface IUserEndpoint : JWTEndpoint!JWTAuthInfo {
     @noAuth
     FEUser[] search(string query, int _page = 0, int pgCount = 20);
 
-    /++
+    /**
         Endpoint changes user info
-    +/
+    */
     @path("/update")
     @method(HTTPMethod.GET)
     @auth(Role.User)
     string update(JWTAuthInfo token, User data);
 
-    /++
+    /**
         === Moderator+ ===
 
 
-    +/
+    */
     @path("/ban/:userId")
     @method(HTTPMethod.POST)
     @queryParam("community", "c")
     @auth(Role.Mod)
     string ban(JWTAuthInfo token, string _userId, bool community = true);
 
-    /++
+    /**
         === Moderator+ ===
-    +/
+    */
     @path("/pardon/:userId")
     @method(HTTPMethod.POST)
     @auth(Role.Mod)
     string pardon(JWTAuthInfo token, string _userId);
 
-    /++
+    /**
         Removes user from database with token.
 
         DO NOTE:
         Verify with password!
-    +/
+    */
     @path("/rmuser")
     @auth(Role.User)
     string rmuser(JWTAuthInfo token, string password);
