@@ -1,4 +1,4 @@
-/+
+*/
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -12,22 +12,30 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-+/
+*/
 module db;
 import vibe.db.mongo.client;
 public import vibe.db.mongo.database;
 import vibe.db.mongo.mongo;
+public import vibe.data.bson;
 import std.traits;
 import config;
 
 __gshared Database DATABASE;
 
-/++
+/**
     The size limit of a string
-+/
+*/
 struct limit {
     /// The limit value
     int size;
+}
+
+/**
+    Bson object
+*/
+Bson bson(T)(T item) {
+    return Bson(item);
 }
 
 /**
