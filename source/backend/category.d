@@ -49,7 +49,7 @@ class CategoryGroup {
     /**
         Children of the group
     */
-    CategoryCompound[] children;    
+    CategoryCompound children;    
 }
 
 /**
