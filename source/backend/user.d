@@ -196,8 +196,6 @@ class User {
     static SearchResult!User search(string queryString, int page = 0, int countPerPage = 20) {
         if (queryString == "" || queryString is null) return list(page, countPerPage);
 
-        import query : bson;
-
         auto inquery = bson([
             "$and": bson([
                 bson(["power": bson(["$gt": bson(0)])]),
@@ -225,7 +223,6 @@ class User {
     }
 
     static SearchResult!User list(int page = 0, int countPerPage = 20) {
-        import query : bson;
         import std.stdio : writeln;
         Bson inquery = bson([
             "$and": bson([
@@ -468,7 +465,7 @@ class User {
     }
 
     FEUser getInfo() {
-        return FEUser(username, displayName, profilePicture, verified, pronouns, displayPronouns, power);
+        return FEUser(username, displayName, profilePicture, verified, pronouns, power);
     }
 }
 
@@ -505,11 +502,6 @@ struct FEUser {
     */
     @name("pronouns")
     Pronouns pronouns;
-
-    /**
-        Wether the user has pronouns enabled
-    */
-    bool pronounsEnabled;
 
     /**
         The user's power level
