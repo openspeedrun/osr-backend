@@ -1,4 +1,4 @@
-*/
+/*
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -153,8 +153,7 @@ class Run {
 
         The runner this refers to is the only (non mod/admin) person who may update the run data.
     */
-    @name("userId")
-    string posterId;
+    string userId;
 
     /**
         ID of the runner
@@ -165,8 +164,7 @@ class Run {
     /**
         The object this run is attached to.
     */
-    @name("attachedTo")
-    Attachment attachedTo;
+    string parentId;
 
     /**
         Date and time this run was posted

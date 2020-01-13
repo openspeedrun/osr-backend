@@ -57,7 +57,7 @@ struct GameInfo {
     string[] communityPages;
 }
 
-@trusted
+@safe
 class Game {
 private:
 
@@ -76,8 +76,6 @@ public:
     */
     static SearchResult!Game search(string queryString, int page = 0, int countPerPage = 20, bool showUnapproved = false) {
         if (queryString == "" || queryString is null) return list(page, countPerPage);
-
-        import query : bson;
 
         auto inquery = bson([
                 "$and": bson([
@@ -105,7 +103,6 @@ public:
     }
 
     static SearchResult!Game list(int page = 0, int countPerPage = 20, bool showUnapproved = false) {
-        import query : bson;
         import std.stdio : writeln;
         Bson inquery = (!showUnapproved) ? 
             bson(["approved": bson(true)]) : 
@@ -260,6 +257,5 @@ public:
     */
     void deleteGame() {
         DATABASE["speedrun.games"].remove(["_id": id]);
-        destroy(this);
     }
 }

@@ -12,7 +12,6 @@ struct SetupData {
         Example:
             platform=Playstation 4
     */
-    @name("platform")
     string platform;
 
     /**
@@ -22,7 +21,6 @@ struct SetupData {
             platform=Windows
             platformVersion=10
     */
-    @name("platformVersion")
     string platformVersion;
 
     /**
@@ -32,7 +30,7 @@ struct SetupData {
             version=2.56.1-beta
     */
     @name("version")
-    string gameVersion;
+    string version_;
 
     /**
         The region of the game
@@ -40,13 +38,10 @@ struct SetupData {
         Example:
             region=JP
     */
-    @name("region")
-    string gameRegion;
+    string region;
 
     /**
         Wether the platform the game is running on was emulated
     */
-    @name("emulated")
-    bool wasEmulated;
-
+    bool emulated;
 }

@@ -1,4 +1,4 @@
-*/
+/*
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -35,7 +35,7 @@ interface IGameEndpoint : JWTEndpoint!JWTAuthInfo {
     @method(HTTPMethod.GET)
     @path("/:gameId")
     @noAuth
-    StatusT!Game game(string _gameId);
+    Game game(string _gameId);
 
     /**
         Search for games
@@ -46,7 +46,7 @@ interface IGameEndpoint : JWTEndpoint!JWTAuthInfo {
     @queryParam("showPending", "showPending")
     @queryParam("query", "query")
     @noAuth
-    StatusT!(Game[]) search(string query, int _page = 0, int pgCount = 20, bool showPending = false);
+    Game[] search(string query, int _page = 0, int pgCount = 20, bool showPending = false);
 
     /**
         Creates a new game
@@ -91,18 +91,19 @@ interface IGameEndpoint : JWTEndpoint!JWTAuthInfo {
 class GameEndpoint : IGameEndpoint {
 public:
 
-    StatusT!Game game(string _gameId) {
+    Game game(string _gameId) {
         Game game = Game.get(_gameId);
-        return StatusT!Game(game !is null ? StatusCode.StatusOK : StatusCode.StatusInvalid, game);
+        if (game is null) throw new HTTPStatusException(404);
+        return game;
     }
 
-    StatusT!(Game[]) search(string query, int _page = 0, int pgCount = 20, bool showPending = false) {
+    Game[] search(string query, int _page = 0, int pgCount = 20, bool showPending = false) {
         Game[] games;
         foreach(game; Game.search(query, _page, pgCount).result) {
             if (!showPending && !game.approved) continue;
             games ~= game;
         }
-        return StatusT!(Game[])(StatusCode.StatusOK, games);
+        return games;
     }
 
     Status createGame(JWTAuthInfo token, string _gameId, GameCreationData data) {

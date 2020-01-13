@@ -1,4 +1,4 @@
-*/
+/*
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -230,12 +230,14 @@ string formatId(string id) {
     return outId;
 }
 
+@trusted
 string generateID(int length = 16) {
     import std.base64 : Base64URLNoPadding;
     import secured.random;
     return Base64URLNoPadding.encode(random(length));
 }
 
+@trusted
 ubyte[] generateIDArr(int length = 16) {
     import std.base64 : Base64URLNoPadding;
     import secured.random;

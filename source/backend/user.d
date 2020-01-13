@@ -1,4 +1,4 @@
-*/
+/*
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -125,21 +125,6 @@ struct Pronouns {
         eg. their
     */
     string possesive = "their";
-}
-
-/// Default pronouns for he/him
-Pronouns heHimPronouns() {
-    return Pronouns("he", "him", "his");
-}
-
-/// Default pronouns for she/her
-Pronouns sheHerPronouns() {
-    return Pronouns("she", "her", "hers");
-}
-
-/// Default pronouns for they/them
-Pronouns theyThemPronouns() {
-    return Pronouns("they", "them", "their");
 }
 
 struct Social {
@@ -339,7 +324,6 @@ class User {
     /**
         User's display name
     */
-    @name("display_name")
     string displayName;
 
     /**
@@ -347,7 +331,6 @@ class User {
 
         By default "neumann.png"
     */
-    @name("profile_picture")
     @optional
     string profilePicture = "/static/app/assets/neumann.png";
 
@@ -391,14 +374,12 @@ class User {
     /**
         Account flavourtext
     */
-    @name("flavour_text")
     @optional
     string flavourText;
 
     /**
         Social places
     */
-    @name("socials")
     @optional
     Social[] socials;
 
@@ -504,13 +485,11 @@ struct FEUser {
     /**
         User's display name
     */
-    @name("display_name")
     string displayName;
 
     /**
         User's profile picture
     */
-    @name("profile_picture")
     string profilePicture;
 
     /**
@@ -530,7 +509,6 @@ struct FEUser {
     /**
         Wether the user has pronouns enabled
     */
-    @name("pronouns_enabled")
     bool pronounsEnabled;
 
     /**

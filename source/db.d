@@ -1,4 +1,4 @@
-*/
+/*
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -21,7 +21,8 @@ public import vibe.data.bson;
 import std.traits;
 import config;
 
-__gshared Database DATABASE;
+@trusted
+Database DATABASE;
 
 /**
     The size limit of a string
@@ -47,6 +48,7 @@ bool verifyLimit(alias item)(string itemStr) {
     return itemStr.length < lmt.size;
 }
 
+@safe
 class Database {
 private:
     MongoClient client;

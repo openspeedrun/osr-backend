@@ -1,4 +1,4 @@
-*/
+/*
     Copyright © Clipsey 2019
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -21,6 +21,7 @@ import backend.common;
 /**
     A category compound, can contain groups and categories
 */
+@safe
 class CategoryCompound {
 
     /**
@@ -38,11 +39,12 @@ class CategoryCompound {
 /**
     A category group, groups multiple compounds under one name
 */
+@safe
 class CategoryGroup {
     /**
         Name of the group
     */
-    string name;
+    string displayName;
 
     /**
         Children of the group
@@ -53,222 +55,100 @@ class CategoryGroup {
 /**
     A category
 */
+@safe
 class Category {
     /**
         ID of the category
     */
     @name("_id")
     @optional
-    BsonObjectID id;
+    string id;
 
     /**
         Display name of the category
     */
     string displayName;
+
+    this() { }
+
+    /**
+        Creates a new category
+    */
+    this(string displayName) {
+        this.id = generateID();
+        this.displayName = displayName;
+    }
 }
 
-// /**
-
-// */
-// class CategoryGroup {
-// @trusted:
-
-//     static MongoCursor!CategoryGroup getList(string gameId) {
-//         return DATABASE["speedrun.catgroup"].find!CategoryGroup(["gameId": gameId]);
-//     }
-
-//     /**
-//         Gets ILCategory
-//     */
-//     static CategoryGroup get(string id) {
-//         return DATABASE["speedrun.catgroup"].findOne!CategoryGroup(["_id": id]);
-//     }
+/**
+    A level is a IL-Category sub-object being the frontend for a single IL run
+*/
+class Level {
+@trusted:
+    /**
+        Gets Level
+    */
+    static Level get(string id) {
+        return DATABASE["speedrun.levels"].findOne!Level(["_id": id]);
+    }
     
-    
-//     /**
-//         Returns true if a category group exists.
-//     */
-//     static bool exists(string group) {
-//         return DATABASE["speedrun.catgroup"].count(["_id": group]) > 0;
-//     }
+    /**
+        Returns true if a level exists.
+    */
+    static bool exists(string lvl) {
+        return DATABASE["speedrun.levels"].count(["_id": lvl]) > 0;
+    }
 
-//     /**
-//         ID of the category
-//     */
-//     @name("_id")
-//     string id;
+    /**
+        ID of the category
+    */
+    @name("_id")
+    string id;
 
-//     /**
-//         ID of game this category belongs to
-//     */
-//     @name("gameId")
-//     string gameId;
+    /**
+        ID of game this category belongs to
+    */
+    @name("gameId")
+    string gameId;
 
-//     /**
-//         Display name of category group
-//     */
-//     @name("displayName")
-//     string displayName;
-// }
+    /**
+        ID of game this category belongs to
+    */
+    @name("categoryId")
+    string categoryId;
 
-// /**
-//     Category for Full Game runs
-// */
-// class Category {
-// @trusted:
-//     static MongoCursor!Category getList(string gameId, string group="") {
-//         return DATABASE["speedrun.categories"].find!Category(["gameId": gameId, "groupId": group]);
-//     }
+    /**
+        What placement the level has in the game
+        (used for ordering levels)
+    */
+    @name("placement")
+    int placement;
 
-//     /**
-//         Gets Category
-//     */
-//     static Category get(string id) {
-//         return DATABASE["speedrun.categories"].findOne!Category(["_id": id]);
-//     }
+    /**
+        Display name of category
+    */
+    string displayName;
 
-//     /**
-//         Returns true if a category exists.
-//     */
-//     static bool exists(string cat) {
-//         return DATABASE["speedrun.categories"].count(["_id": cat]) > 0;
-//     }
-    
-//     /**
-//         ID of the category
-//     */
-//     @name("_id")
-//     string id;
+    this() { }
 
-//     /**
-//         ID of the category group this belongs to.
-//         groupId is "" if its in the root of the game
-//     */
-//     @name("groupId")
-//     string groupId = "";
+    this(string gameId, string categoryId, string displayName) {
 
-//     /**
-//         ID of game this category belongs to
-//     */
-//     @name("gameId")
-//     string gameId;
+        // Generate a unique ID, while ensuring uniqueness
+        do { this.id = generateID(16); } while(Level.exists(this.id));
 
-//     /**
-//         Display name of category
-//     */
-//     @name("displayName")
-//     string displayName;
+        this.gameId = gameId;
+        this.categoryId = categoryId;
 
-//     /**
-//         Description of category
-//     */
-//     @name("description")
-//     string description;
+        // Make sure we're assigning this to an IL category
 
-//     /**
-//         The rules of this category
-//     */
-//     @name("rules")
-//     string rules;
+        this.displayName = displayName;
+        DATABASE["speedrun.levels"].insert(this);
+    }
 
-//     /**
-//         Wether this category is an IL category
-//     */
-//     @name("isIL")
-//     bool individualLevel;
-
-//     this() { }
-
-//     this(string gameId, string displayName, bool il, string group="") {
-
-//         // Generate a unique ID, while ensuring uniqueness
-//         do { this.id = generateID(16); } while(Category.exists(this.id));
-
-//         this.gameId = gameId;
-//         this.displayName = displayName;
-//         this.groupId = group;
-//         this.individualLevel = il;
-//         DATABASE["speedrun.categories"].insert(this);
-//     }
-
-//     void update() {
-//         DATABASE["speedrun.categories"].update(["_id": id], this);
-//     }
-
-//     void remove() {
-//         DATABASE["speedrun.categories"].remove(["_id": id]);
-//     }
-// }
-
-// /**
-//     A level is a IL-Category sub-object being the frontend for a single IL run
-// */
-// class Level {
-// @trusted:
-//     /**
-//         Gets Level
-//     */
-//     static Level get(string id) {
-//         return DATABASE["speedrun.levels"].findOne!Level(["_id": id]);
-//     }
-    
-//     /**
-//         Returns true if a level exists.
-//     */
-//     static bool exists(string lvl) {
-//         return DATABASE["speedrun.levels"].count(["_id": lvl]) > 0;
-//     }
-
-//     /**
-//         ID of the category
-//     */
-//     @name("_id")
-//     string id;
-
-//     /**
-//         ID of game this category belongs to
-//     */
-//     @name("gameId")
-//     string gameId;
-
-//     /**
-//         ID of game this category belongs to
-//     */
-//     @name("categoryId")
-//     string categoryId;
-
-//     /**
-//         What placement the level has in the game
-//         (used for ordering levels)
-//     */
-//     @name("placement")
-//     int placement;
-
-//     /**
-//         Display name of category
-//     */
-//     string displayName;
-
-//     this() { }
-
-//     this(string gameId, string categoryId, string displayName) {
-
-//         // Generate a unique ID, while ensuring uniqueness
-//         do { this.id = generateID(16); } while(Level.exists(this.id));
-
-//         this.gameId = gameId;
-//         this.categoryId = categoryId;
-
-//         // Make sure we're assigning this to an IL category
-
-//         this.displayName = displayName;
-//         DATABASE["speedrun.levels"].insert(this);
-//     }
-
-//     /**
-//         Deletes this level
-//     */
-//     void remove() {
-//         DATABASE["speedrun.levels"].remove(["_id": id]);
-//     }
-// }
+    /**
+        Deletes this level
+    */
+    void remove() {
+        DATABASE["speedrun.levels"].remove(["_id": id]);
+    }
+}
