@@ -116,246 +116,245 @@ struct RunCreationData {
     string description;
 }
 
-/**
-    A run
-*/
-class Run {
-@trusted:
-    /**
-        Returns run instance if exists.
-    */
-    static Run get(string runId) {
-        return DATABASE["speedrun.runs"].findOne!Run(["_id": runId]);
-    }
+// /**
+//     A run
+// */
+// class Run {
+// @trusted:
+//     /**
+//         Returns run instance if exists.
+//     */
+//     static Run get(string runId) {
+//         return DATABASE["speedrun.runs"].findOne!Run(["_id": runId]);
+//     }
 
-    /**
-        Returns the amount of runs attributed to a user
-    */
-    static ulong getRunCountForUser(string userId) {
-        return DATABASE["speedrun.runs"].count(["userId": userId]);
-    }
+//     /**
+//         Returns the amount of runs attributed to a user
+//     */
+//     static ulong getRunCountForUser(string userId) {
+//         return DATABASE["speedrun.runs"].count(["userId": userId]);
+//     }
     
-    /**
-        Checks wether an ID was taken
-    */
-    static bool has(string id) {
-        return DATABASE["speedrun.runs"].count(["_id": id]) > 0;
-    }
+//     /**
+//         Checks wether an ID was taken
+//     */
+//     static bool has(string id) {
+//         return DATABASE["speedrun.runs"].count(["_id": id]) > 0;
+//     }
 
-    /**
-        ID of the run
-    */
-    @name("_id")
-    string id;
+//     /**
+//         ID of the run
+//     */
+//     @name("_id")
+//     string id;
 
-    /**
-        The ID of the runner that posted this.
+//     /**
+//         The ID of the runner that posted this.
 
-        The runner this refers to is the only (non mod/admin) person who may update the run data.
-    */
-    string userId;
+//         The runner this refers to is the only (non mod/admin) person who may update the run data.
+//     */
+//     string userId;
 
-    /**
-        ID of the runner
-    */
-    @name("runners")
-    RunRunner[] runners;
+//     /**
+//         ID of the runner
+//     */
+//     @name("runners")
+//     RunRunner[] runners;
 
-    /**
-        The object this run is attached to.
-    */
-    string parentId;
+//     /**
+//         The object this run is attached to.
+//     */
+//     string parentId;
 
-    /**
-        Date and time this run was posted
-    */
-    DateTime postDate;
+//     /**
+//         Date and time this run was posted
+//     */
+//     DateTime postDate;
 
-    /**
-        How long the run took to complete in real-time
-    */
-    SRTimeStamp timeStamp;
+//     /**
+//         How long the run took to complete in real-time
+//     */
+//     SRTimeStamp timeStamp;
     
-    /**
-        How long the run took to complete in In-Game time
-    */
-    SRTimeStamp timeStampIG;
+//     /**
+//         How long the run took to complete in In-Game time
+//     */
+//     SRTimeStamp timeStampIG;
 
-    /**
-        Link to video proof of completion
-    */
-    string proof;
+//     /**
+//         Link to video proof of completion
+//     */
+//     string proof;
 
-    /**
-        User-set description
-    */
-    string description;
+//     /**
+//         User-set description
+//     */
+//     string description;
 
-    /**
-        Wether the run has been invalidated.
-    */
-    bool invalidated;
+//     /**
+//         Wether the run has been invalidated.
+//     */
+//     bool invalidated;
 
-    /**
-        Wether the run has been verified by a game moderator
-    */
-    bool verified = false;
+//     /**
+//         Wether the run has been verified by a game moderator
+//     */
+//     bool verified = false;
 
-    /// For deserialization
-    this() { }
+//     /// For deserialization
+//     this() { }
 
-    /**
-        Create a new Full-Game Run
-    */
-    static Run newFG(RunCreationData rundata) {
-        return new Run(rundata, true);
-    }
+//     /**
+//         Create a new Full-Game Run
+//     */
+//     static Run newFG(RunCreationData rundata) {
+//         return new Run(rundata, true);
+//     }
 
-    /**
-        Create a new Full-Game Run
-    */
-    static Run newIG(RunCreationData rundata) {
-        return new Run(rundata, false);
-    }
+//     /**
+//         Create a new Full-Game Run
+//     */
+//     static Run newIG(RunCreationData rundata) {
+//         return new Run(rundata, false);
+//     }
 
-    this(RunCreationData rundata, bool fg) {
+//     this(RunCreationData rundata, bool fg) {
 
-        if (rundata.proof.length == 0) throw new Exception("Runs without proof are not allowed.");
+//         if (rundata.proof.length == 0) throw new Exception("Runs without proof are not allowed.");
 
-        // Generate a unique ID, while ensuring uniqueness
-        do { this.id = generateID(16); } while(Run.has(this.id));
+//         // Generate a unique ID, while ensuring uniqueness
+//         do { this.id = generateID(16); } while(Run.has(this.id));
 
-        // TODO: Find a runner attached to a user, if none found create one
+//         // TODO: Find a runner attached to a user, if none found create one
         
-        this.posterId = rundata.posterId;
-        this.attachedTo = new Attachment(fg ? RunType.FG : RunType.IL, rundata.attachment);
-        this.runners = rundata.runners;
-        this.postDate = cast(DateTime)Clock.currTime(UTC());
-        this.timeStamp = rundata.timeStamp;
-        this.timeStampIG = rundata.timeStampIG;
-        this.proof = rundata.proof;
-        this.description = rundata.description;
+//         this.posterId = rundata.posterId;
+//         this.attachedTo = new Attachment(fg ? RunType.FG : RunType.IL, rundata.attachment);
+//         this.runners = rundata.runners;
+//         this.postDate = cast(DateTime)Clock.currTime(UTC());
+//         this.timeStamp = rundata.timeStamp;
+//         this.timeStampIG = rundata.timeStampIG;
+//         this.proof = rundata.proof;
+//         this.description = rundata.description;
 
-        // Sanity checks and cleanup
+//         // Sanity checks and cleanup
 
-        if (!User.exists(this.posterId)) throw new Exception("Tried to post from nonexistant account!");
+//         if (!User.exists(this.posterId)) throw new Exception("Tried to post from nonexistant account!");
         
-        // Verify that game category makes sense
-        if (fg) {
+//         // Verify that game category makes sense
+//         if (fg) {
 
-            // Check if category exists
-            if (!Category.exists(this.attachedTo.id)) 
-                throw new Exception("Category does not exist!");
+//             // Check if category exists
+//             if (!Category.exists(this.attachedTo.id)) 
+//                 throw new Exception("Category does not exist!");
 
-        } else {
+//         } else {
 
-            // Check if level exists
-            if (!Level.exists(this.attachedTo.id)) 
-                throw new Exception("Level does not exist!");
-        }
+//             // Check if level exists
+//             if (!Level.exists(this.attachedTo.id)) 
+//                 throw new Exception("Level does not exist!");
+//         }
         
-        // Runs without proof might as well just be lies, enforce run proof.
-        if (proof is null) throw new Exception("Cannot submit run without proof!");
+//         // Runs without proof might as well just be lies, enforce run proof.
+//         if (proof is null) throw new Exception("Cannot submit run without proof!");
 
-        // Ensure compliance for a run
-        foreach(runner; this.runners) {
-            runner.ensureComplianceRun();
-        }
+//         // Ensure compliance for a run
+//         foreach(runner; this.runners) {
+//             runner.ensureComplianceRun();
+//         }
 
-        // Finally insert the run
-        DATABASE["speedrun.runs"].insert(this);
-    }
+//         // Finally insert the run
+//         DATABASE["speedrun.runs"].insert(this);
+//     }
 
-    /**
-        Accept a run
-    */
-    void accept() {
-        verified = true;
-        update();
-    }
+//     /**
+//         Accept a run
+//     */
+//     void accept() {
+//         verified = true;
+//         update();
+//     }
 
-    /**
-        Revoke a run
-    */
-    void revoke() {
-        verified = false;
-        update();
-    }
+//     /**
+//         Revoke a run
+//     */
+//     void revoke() {
+//         verified = false;
+//         update();
+//     }
 
-    /**
-        Mark a run as invalidated
-    */
-    void invalidate() {
-        invalidated = true;
-        update();
-    }
+//     /**
+//         Mark a run as invalidated
+//     */
+//     void invalidate() {
+//         invalidated = true;
+//         update();
+//     }
 
-    /**
-        Mark a run as validated (default)
-    */
-    void validate() {
-        invalidated = false;
-        update();
-    }
+//     /**
+//         Mark a run as validated (default)
+//     */
+//     void validate() {
+//         invalidated = false;
+//         update();
+//     }
 
-    /**
-        Deny a run
-    */
-    void deny() {
-        deleteRun();
-    }
+//     /**
+//         Deny a run
+//     */
+//     void deny() {
+//         deleteRun();
+//     }
 
-    /**
-        Move game from one category to an other
+//     /**
+//         Move game from one category to an other
 
-        This function sanity checks moves, so no games can be moved from one game to another.
-    */
-    void move(string to) {
+//         This function sanity checks moves, so no games can be moved from one game to another.
+//     */
+//     void move(string to) {
 
-        // Run sanity checks first
-        if (attachedTo.type == RunType.FG) {
+//         // Run sanity checks first
+//         if (attachedTo.type == RunType.FG) {
 
-            if (!Category.exists(to))
-                throw new Exception("Category does not exist!");
+//             if (!Category.exists(to))
+//                 throw new Exception("Category does not exist!");
 
-            Category oldCategory = Category.get(attachedTo.id);
-            Category newCategory = Category.get(to);
+//             Category oldCategory = Category.get(attachedTo.id);
+//             Category newCategory = Category.get(to);
 
-            // Make sure that the user doesn't try to move the run across games
-            if (oldCategory.gameId != newCategory.gameId) 
-                throw new Exception("Cannot move run across games!");
+//             // Make sure that the user doesn't try to move the run across games
+//             if (oldCategory.gameId != newCategory.gameId) 
+//                 throw new Exception("Cannot move run across games!");
 
-        } else {
+//         } else {
 
-            if (!Level.exists(to))
-                throw new Exception("Level does not exist!");
+//             if (!Level.exists(to))
+//                 throw new Exception("Level does not exist!");
 
-            Level oldLevel = Level.get(attachedTo.id);
-            Level newLevel = Level.get(to);
+//             Level oldLevel = Level.get(attachedTo.id);
+//             Level newLevel = Level.get(to);
 
-            // Make sure that the user doesn't try to move the run across games
-            if (oldLevel.gameId != newLevel.gameId) 
-                throw new Exception("Cannot move run across games!");
+//             // Make sure that the user doesn't try to move the run across games
+//             if (oldLevel.gameId != newLevel.gameId) 
+//                 throw new Exception("Cannot move run across games!");
 
-        }
+//         }
 
-        // Update the attachment.
-        attachedTo.id = to;
-        update();
-    }
+//         // Update the attachment.
+//         attachedTo.id = to;
+//         update();
+//     }
 
-    /**
-        Update the data in the database
-    */
-    void update() {
-        return DATABASE["speedrun.runs"].update(["_id": id], this);
-    }
+//     /**
+//         Update the data in the database
+//     */
+//     void update() {
+//         return DATABASE["speedrun.runs"].update(["_id": id], this);
+//     }
 
-    /**
-        Delete game
-    */
-    void deleteRun() {
-        DATABASE["speedrun.runs"].remove(["_id": id]);
-        destroy(this);
-    }
-}
+//     /**
+//         Delete game
+//     */
+//     void deleteRun() {
+//         DATABASE["speedrun.runs"].remove(["_id": id]);
+//     }
+// }
